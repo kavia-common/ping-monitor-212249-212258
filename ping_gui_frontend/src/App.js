@@ -48,7 +48,7 @@ function App() {
       workerRef.current = null;
     }
     // PUBLIC_INTERFACE - create web worker
-    const worker = new Worker(new URL('./workers/pingWorker.js', import.meta.url));
+    const worker = typeof Worker !== 'undefined' ? new Worker('/pingWorker.js') : { postMessage: () => {}, terminate: () => {} };
     workerRef.current = worker;
 
     worker.onmessage = (e) => {
