@@ -1,82 +1,52 @@
-# Lightweight React Template for KAVIA
+# Ping GUI (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A lightweight, modern React app that provides a "ping-like" experience in the browser with real-time logs, start/stop controls, and an Ocean Professional theme.
+
+## Important Note: ICMP Is Not Available in Browsers
+
+Web browsers cannot send real ICMP echo requests. This application offers two modes:
+
+- HTTP Reachability: Uses fetch() with HEAD or GET to measure round-trip time to a URL. This is not true ICMP ping but is useful for reachability/latency approximation.
+- Simulation: Generates synthetic latency and occasional timeouts to demonstrate the UI and logging without any network calls.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- IP/Hostname/URL input, interval and timeout settings
+- Mode selection: HTTP (HEAD/GET) or Simulation
+- Start/Stop controls
+- Real-time log viewer with auto-scroll
+- Export logs to a text file
+- Clear logs
+- Ocean Professional theme (blue + amber accents), dark mode toggle
+- REACT_APP_LOG_LEVEL supported: debug | info | warn | error
 
-## Getting Started
+## Usage
 
-In the project directory, you can run:
+1. Install dependencies and start:
+   - npm install
+   - npm start
+2. Enter a target:
+   - For HTTP mode, provide a full URL: e.g., https://example.com
+   - For Simulation mode, any text is fine.
+3. Choose method (HEAD/GET) for HTTP mode, set interval (ms) and timeout (ms).
+4. Click Start to begin. Click Stop to end the session.
+5. Use the Logs panel to Export or Clear entries.
 
-### `npm start`
+## Environment Variables
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- REACT_APP_LOG_LEVEL: Controls console verbosity. One of: debug, info, warn, error. Default: info.
 
-### `npm test`
+## Tech Notes
 
-Launches the test runner in interactive watch mode.
+- HTTP pings are implemented via a Web Worker (src/workers/pingWorker.js). Each iteration performs a fetch() with AbortController for timeouts and posts results back to the main thread.
+- Simulation mode uses src/utils/pingSimulator.js to emulate latency and packet loss.
+- The UI is composed of:
+  - src/components/PingPanel.js for controls
+  - src/components/LogViewer.js for real-time logs
 
-### `npm run build`
+## Scripts
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- npm start: Start dev server
+- npm test: Run tests
+- npm run build: Production build
 
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
